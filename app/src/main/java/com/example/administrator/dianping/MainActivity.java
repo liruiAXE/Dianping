@@ -18,13 +18,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ViewUtils.inject(this);
-//        button=(Button)findViewById(R.id.btn);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(getBaseContext(),"fuck",Toast.LENGTH_LONG).show();
-//            }
-//        });
+
     }
     @OnClick(R.id.btn)
     public void click(View view){
