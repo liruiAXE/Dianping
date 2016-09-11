@@ -33,6 +33,7 @@ public class WelcomeStartAct extends AppCompatActivity {
         public void run() {
             Intent intent=new Intent(getApplicationContext(),MainActivity.class);
             startActivity(intent);
+            Intent i;
         }
     }
 }
