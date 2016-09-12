@@ -24,7 +24,7 @@ public class WelcomeStartAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_start);
         Timer timer=new Timer();
-        timer.schedule(new Task(),3000);
+        timer.schedule(new Task(),500);
     }
     class Task extends TimerTask{
         @Override
