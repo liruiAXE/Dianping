@@ -11,8 +11,6 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 
 public class MainActivity extends AppCompatActivity {
-    @ViewInject(R.id.btn)
-    private Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,8 +18,5 @@ public class MainActivity extends AppCompatActivity {
         ViewUtils.inject(this);
 
     }
-    @OnClick(R.id.btn)
-    public void click(View view){
-        Toast.makeText(getBaseContext(),"fuck",Toast.LENGTH_LONG).show();
-    }
+
 }

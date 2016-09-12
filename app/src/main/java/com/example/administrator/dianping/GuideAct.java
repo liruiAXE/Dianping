@@ -22,7 +22,7 @@ public class GuideAct extends AppCompatActivity {
     ViewPager viewPager;
     @ViewInject(R.id.welcome_guide_btn)
     Button enter_btn;
-    List<View> list;
+    List<ImageView> list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,17 +76,17 @@ public class GuideAct extends AppCompatActivity {
         }
     }
     private void initViewPager(){
-        list=new ArrayList<>();
+        list=new ArrayList<ImageView>();
         ImageView imageView1=new ImageView(this);
-        imageView1.setImageResource(R.drawable.g1);
+        imageView1.setImageResource(R.drawable.t1);
         imageView1.setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
-        imageView1.setScaleType(ImageView.ScaleType.FIT_XY);
+//        imageView1.setScaleType(ImageView.ScaleType.FIT_XY);
         ImageView imageView2=new ImageView(this);
-        imageView2.setImageResource(R.drawable.g2);
-        imageView2.setScaleType(ImageView.ScaleType.FIT_XY);
+        imageView2.setImageResource(R.drawable.t2);
+//        imageView2.setScaleType(ImageView.ScaleType.FIT_XY);
         ImageView imageView3=new ImageView(this);
-        imageView3.setImageResource(R.drawable.g3);
-        imageView3.setScaleType(ImageView.ScaleType.FIT_XY);
+        imageView3.setImageResource(R.drawable.t3);
+//        imageView3.setScaleType(ImageView.ScaleType.FIT_XY);
 
         list.add(imageView1);
         list.add(imageView2);
