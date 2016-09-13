@@ -1,15 +1,55 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.administrator.dianping.fragment.TabFragment_1">
+    tools:context="com.example.administrator.dianping.fragment.TabFragment_1"
+    android:background="@android:color/holo_blue_bright">
 
-    <!-- TODO: Update blank TabFragment_3 layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="1"
-        android:layout_gravity="center"
-        android:textSize="30sp"/>
+        android:layout_height="wrap_content"
+        android:background="@color/normal_orange_color"
+        android:layout_alignParentTop="true"
+        >
 
-</FrameLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_region"
+            android:id="@+id/add_icon"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"/>
+        <TextView
+            android:layout_toRightOf="@+id/add_icon"
+            android:padding="5dp"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="定位城市"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:layout_margin="10dp"
+            android:textSize="14sp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/whilte"
+
+            android:gravity="center"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="城市名"
+            android:textSize="21sp"
+            android:textColor="@color/whilte"
+            android:id="@+id/cityname"
+            android:layout_centerInParent="true"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_search"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

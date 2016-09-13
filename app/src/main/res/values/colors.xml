@@ -7,5 +7,5 @@
     <color name="black_overlay">#66000000</color> 
     <color name="normal_orange_color">#FF6633</color>
     <color name="normal_back_color">#E0DFE0</color>
-
+    <color name="whilte">#FFFFFF</color>
 </resources>
