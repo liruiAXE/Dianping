@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.example.administrator.dianping.R;
@@ -47,5 +48,32 @@ public class SideView extends View {
             canvas.drawText(sideString[i],sx,base_y,paint);
             Log.i(TAG,"sx "+sx+"  base_y  "+base_y);
         }
+    }
+    private OnLetterChangelistener li;
+    public interface OnLetterChangelistener{
+        public void onLetterChange(String s);
+    }
+    public void setOnLeterChangeLisener(OnLetterChangelistener li){
+        this.li=li;
+    }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        final  int action=event.getAction();
+        final float y=event.getY();
+        int pos=(int) ((y/getHeight())*sideString.length);
+        Log.i(TAG,"y "+y);
+        switch (action){
+            case MotionEvent.ACTION_UP:
+                setBackgroundResource(android.R.color.transparent);
+                break;
+            default:
+                Log.i(TAG,"POS "+pos);
+                setBackgroundResource(R.drawable.sidebar_backgr);
+            if (pos>0&&pos<sideString.length&&li!=null) {
+                li.onLetterChange(sideString[pos]);
+            }
+
+        }
+        return true;
     }
 }

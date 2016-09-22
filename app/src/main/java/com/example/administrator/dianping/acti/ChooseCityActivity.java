@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.administrator.dianping.R;
 import com.example.administrator.dianping.enty.City;
+import com.example.administrator.dianping.myview.SideView;
 import com.example.administrator.dianping.utils.CityFetch;
 import com.example.administrator.dianping.utils.SharedUtils;
 import com.google.gson.Gson;
@@ -33,7 +34,8 @@ public class ChooseCityActivity extends AppCompatActivity {
     private ListView chooseList;
     private List<City> choose_cityList=new ArrayList<>();
     ListAdapter listAdapter;
-
+    @ViewInject(R.id.myside_view)
+    SideView sideView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,9 +63,29 @@ public class ChooseCityActivity extends AppCompatActivity {
         } else {
             new CityGetTask().execute();
         }
+        sideView.setOnLeterChangeLisener(new SideView.OnLetterChangelistener() {
+            @Override
+            public void onLetterChange(String s) {
+                Log.i(TAG,s);
+                int pos=findPos(choose_cityList,s);
+                Log.i(TAG,"POS  "+pos);
+                if (pos>=0&&pos<choose_cityList.size())
+                {
+                    Log.i(TAG,"S  "+s+"  pos  "+pos);
+                    chooseList.setSelection(pos);
+                }
 
+            }
+        });
     }
-
+    private int findPos(List<City> cityList,String s){
+        for (int i=0;i<cityList.size();i++){
+            if (cityList.get(i).getCity_sortkey().equals(s)){
+                return i;
+            }
+        }
+        return -1;
+    }
     class CityGetTask extends AsyncTask<Void,Void,List<City>>{
         @Override
         protected List<City> doInBackground(Void... params) {
