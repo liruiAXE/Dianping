@@ -36,6 +36,7 @@ import java.util.List;
 public class TabFragment_1 extends Fragment implements LocationListener{
     private static String TAG="tabf1";
     String cityName=null;
+    Boolean isAutoGetCityName=true;
     LocationManager locationManager;
     @ViewInject(R.id.cityname)
     TextView cityN;
@@ -83,32 +84,40 @@ public class TabFragment_1 extends Fragment implements LocationListener{
     public void onStart() {
         super.onStart();
         Log.i("tabf1","onStart");
-        locationManager=(LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        boolean isOpen=locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        if (!isOpen){
-            Intent intent=new Intent();
-            intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+        Log.i(TAG,"SSSonStart");
+        if (isAutoGetCityName)
+        {
+            locationManager=(LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            boolean isOpen=locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            if (!isOpen){
+                Intent intent=new Intent();
+                intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getContext().startActivity(intent);
+            }
+            try{
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+                        8000,1,this);
+            } catch (SecurityException e){
+                e.printStackTrace();
+            }
         }
-        try{
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-                    8000,1,this);
-        } catch (SecurityException e){
-            e.printStackTrace();
-        }
+
 
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG,"onStop");
-        try {
-            locationManager.removeUpdates(this);
-        } catch (SecurityException e){
-            e.printStackTrace();
+        if (isAutoGetCityName){
+            Log.i(TAG,"onStop");
+            try {
+                locationManager.removeUpdates(this);
+            } catch (SecurityException e){
+                e.printStackTrace();
+            }
         }
+
 
     }
 
@@ -163,12 +172,15 @@ public class TabFragment_1 extends Fragment implements LocationListener{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.i(TAG,"onActivityResult");
+
+        Log.i(TAG,"SSSonActivityResult");
         Log.i(TAG,"resquestCOde + "+requestCode+"   Rusult "+resultCode);
         if (requestCode==51 && resultCode== Activity.RESULT_OK){
             String cityName=data.getStringExtra("CITY_NAME");
             cityN.setText(cityName);
             Log.i(TAG,"onActivityResult");
+            isAutoGetCityName=false;
         }
     }
+
 }
