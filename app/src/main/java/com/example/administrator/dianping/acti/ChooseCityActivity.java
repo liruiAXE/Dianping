@@ -16,7 +16,11 @@ import android.widget.TextView;
 import com.example.administrator.dianping.R;
 import com.example.administrator.dianping.enty.City;
 import com.example.administrator.dianping.utils.CityFetch;
+import com.example.administrator.dianping.utils.SharedUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.http.SyncHttpHandler;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
@@ -47,12 +51,20 @@ public class ChooseCityActivity extends AppCompatActivity {
                 finish();
             }
         });
-        asyncTask.execute();
+        if (SharedUtils.isCityListAva(getBaseContext())){
+            String jsonStr= SharedUtils.getCityListJsonStr(getBaseContext());
+            List<City> list=new Gson().fromJson(jsonStr,new TypeToken<List<City>>(){}.getType());
+            choose_cityList.clear();
+            choose_cityList.addAll(list);
+            listAdapter.notifyDataSetChanged();
+            Log.i(TAG,"ShareUtils in ...");
+        } else {
+            new CityGetTask().execute();
+        }
 
     }
 
-
-    private AsyncTask<Void,Void,List<City>> asyncTask=new AsyncTask<Void, Void, List<City>>() {
+    class CityGetTask extends AsyncTask<Void,Void,List<City>>{
         @Override
         protected List<City> doInBackground(Void... params) {
             List<City> list= CityFetch.getCityList(CityFetch.CITY_URL);
@@ -66,9 +78,13 @@ public class ChooseCityActivity extends AppCompatActivity {
             sortkeyMap.clear();
             choose_cityList.addAll(cityList);
             listAdapter.notifyDataSetChanged();
+            String jsonStr=new Gson().toJson(choose_cityList);
+            SharedUtils.upDateCitylist(getBaseContext(),jsonStr);
 
         }
-    } ;
+    }
+
+
     class ViewHolder{
         TextView sort_key;
         TextView city_name;
