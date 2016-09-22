@@ -1,20 +1,29 @@
 package com.example.administrator.dianping;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.example.administrator.dianping.acti.ChooseCityActivity;
+import com.example.administrator.dianping.enty.City;
 import com.example.administrator.dianping.fragment.TabFragment_1;
 import com.example.administrator.dianping.fragment.TabFragment_2;
 import com.example.administrator.dianping.fragment.TabFragment_3;
 import com.example.administrator.dianping.fragment.TabFragment_4;
+import com.example.administrator.dianping.utils.CityFetch;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.db.converter.BooleanColumnConverter;
 import com.lidroid.xutils.view.annotation.ViewInject;
+
+import java.io.InputStream;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener{
     Fragment f1,f2,f3,f4;
@@ -46,21 +55,27 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 
 
     }
+    private void test(){
+        Intent intent=new Intent();
+        intent.setClass(getBaseContext(), ChooseCityActivity.class);
+        startActivity(intent);
+    }
+
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId){
             case R.id.index:
-                initFragment(f1,true);
+                initFragment(f1,false);
                 break;
             case R.id.label:
-                initFragment(f2,true);
+                initFragment(f2,false);
                 break;
             case R.id.history:
                 initFragment(f3,true);
                 break;
             case R.id.aboutme:
-                initFragment(f4,true);
+                initFragment(f4,false);
                 break;
             default:
                 return;
@@ -86,5 +101,10 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         if (fragmentManager.findFragmentByTag(TabFragment_4.class.getName())!=null){
             aboutMRadioBtn.setChecked(true);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.administrator.dianping.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
@@ -22,9 +23,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.administrator.dianping.R;
+import com.example.administrator.dianping.acti.ChooseCityActivity;
 import com.example.administrator.dianping.utils.SharedUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.lidroid.xutils.view.annotation.event.OnClick;
 
 import java.io.IOException;
 import java.util.List;
@@ -36,6 +39,7 @@ public class TabFragment_1 extends Fragment implements LocationListener{
     LocationManager locationManager;
     @ViewInject(R.id.cityname)
     TextView cityN;
+
     private Handler handler=new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -54,6 +58,8 @@ public class TabFragment_1 extends Fragment implements LocationListener{
         View view=inflater.inflate(R.layout.fragment_fragment_1, container, false);
         ViewUtils.inject(this,view);
         Location location=null;
+
+
 //        cityN.setText(SharedUtils.getCityLocation(getContext()));
 //        try {
 //            location=locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -146,5 +152,23 @@ public class TabFragment_1 extends Fragment implements LocationListener{
     @Override
     public void onProviderDisabled(String provider) {
 
+    }
+
+    @OnClick(R.id.choose_city)
+    public void cliclkk(View view){
+        Intent i=new Intent();
+        i.setClass(getContext(),ChooseCityActivity.class);
+        startActivityForResult(i,51);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i(TAG,"onActivityResult");
+        Log.i(TAG,"resquestCOde + "+requestCode+"   Rusult "+resultCode);
+        if (requestCode==51 && resultCode== Activity.RESULT_OK){
+            String cityName=data.getStringExtra("CITY_NAME");
+            cityN.setText(cityName);
+            Log.i(TAG,"onActivityResult");
+        }
     }
 }
