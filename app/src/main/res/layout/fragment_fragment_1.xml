@@ -1,9 +1,10 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.administrator.dianping.fragment.TabFragment_1"
-    android:background="@android:color/holo_blue_bright">
+    android:orientation="vertical"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -52,5 +53,15 @@
             android:id="@+id/refresh"/>
 
     </RelativeLayout>
+    <GridView
+        android:id="@+id/home_nav_sort"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:numColumns="3"
+        android:scrollbars="none"
+        android:padding="6dp">
 
-</RelativeLayout>
+    </GridView>
+
+</LinearLayout>

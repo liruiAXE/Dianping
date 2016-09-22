@@ -20,10 +20,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.dianping.R;
+import com.example.administrator.dianping.acti.AllCatActivity;
 import com.example.administrator.dianping.acti.ChooseCityActivity;
+import com.example.administrator.dianping.utils.MyUtils;
 import com.example.administrator.dianping.utils.SharedUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -32,7 +38,7 @@ import com.lidroid.xutils.view.annotation.event.OnClick;
 import java.io.IOException;
 import java.util.List;
 
-
+//是因为害怕太。。。了吗？
 public class TabFragment_1 extends Fragment implements LocationListener{
     private static String TAG="tabf1";
     String cityName=null;
@@ -41,6 +47,8 @@ public class TabFragment_1 extends Fragment implements LocationListener{
     @ViewInject(R.id.cityname)
     TextView cityN;
 
+    @ViewInject(R.id.home_nav_sort)
+    GridView gridView;
     private Handler handler=new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -77,9 +85,64 @@ public class TabFragment_1 extends Fragment implements LocationListener{
 //        if (addr.size()>0){
 //            cityN.setText(addr.get(0).getLocality());
 //        }
+        gridView.setAdapter(new NaVAdapter());
         return view;
     }
 
+    class NaVAdapter extends BaseAdapter{
+        @Override
+        public int getCount() {
+            return MyUtils.navsSort.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, final ViewGroup parent) {
+            VHolder holder;
+            if (convertView==null){
+                holder=new VHolder();
+                convertView=LayoutInflater.from(getContext()).inflate(R.layout.home_nav,parent,false);
+                ViewUtils.inject(holder,convertView);
+                convertView.setTag(holder);
+            } else {
+                holder=(VHolder) convertView.getTag();
+            }
+            holder.icon.setImageResource(MyUtils.navsSortImages[position]);
+            holder.text.setText(MyUtils.navsSort[position]);
+            if (position==MyUtils.navsSort.length-1){
+                holder.icon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        View view=LayoutInflater.from(getContext()).inflate(R.layout.home_nav,parent,false);
+                        ImageView i=(ImageView)view.findViewById(R.id.myicon);
+                        i.setImageResource(R.drawable.flower);
+                        Toast t=new Toast(getContext());
+                        t.setView(view);
+                        t.setDuration(Toast.LENGTH_LONG);
+                        t.show();
+                        Intent intent=new Intent(getContext(), AllCatActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }
+            return convertView;
+        }
+    }
+    class VHolder{
+        @ViewInject(R.id.myicon)
+        ImageView icon;
+        @ViewInject(R.id.name)
+        TextView text;
+    }
     @Override
     public void onStart() {
         super.onStart();

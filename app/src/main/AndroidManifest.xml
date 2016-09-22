@@ -24,7 +24,8 @@
         <activity
             android:name=".GuideAct"
             android:theme="@style/NotitleTheme" />
-        <activity android:name=".acti.ChooseCityActivity"></activity>
+        <activity android:name=".acti.ChooseCityActivity" />
+        <activity android:name=".acti.AllCatActivity"></activity>
     </application>
 
 </manifest>
