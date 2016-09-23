@@ -17,4 +17,5 @@ public class MyUtils {
     public static int[] allCategrayImages = {R.drawable.more, R.drawable.mont, R.drawable.fox, R.drawable.fee,
             R.drawable.fee, R.drawable.mont, R.drawable.more, R.drawable.fee,
             R.drawable.mont, R.drawable.mont, R.drawable.more, R.drawable.fee, R.drawable.mont};
+    public static int[] allCategorySum=new int[allCategrayImages.length+5];
 }

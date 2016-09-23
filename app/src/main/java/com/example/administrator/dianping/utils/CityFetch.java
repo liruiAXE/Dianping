@@ -33,6 +33,7 @@ import java.util.List;
 public class CityFetch {
     public static String TAG="CityFetch";
     private static String SERVICE_ADDR="192.168.191.1";
+    public static String BASE_URL=CITY_URL="http://"+SERVICE_ADDR+":8189/api/";
     public static String CITY_URL="http://"+SERVICE_ADDR+":8189/api/city";
 //    public static String CITY_URL="http://http://stackoverflow.com";
     private static Gson gson=(new GsonBuilder()).setPrettyPrinting().create();
