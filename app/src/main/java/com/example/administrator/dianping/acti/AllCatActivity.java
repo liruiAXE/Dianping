@@ -38,7 +38,7 @@ public class AllCatActivity extends AppCompatActivity {
         for (int i=0;i<MyUtils.allCategorySum.length;i++){
             MyUtils.allCategorySum[i]=0;
         }
-        new CatgetTask().execute(); 
+        new CatgetTask().execute();
     }
     class CatAdapter extends BaseAdapter{
         @Override
