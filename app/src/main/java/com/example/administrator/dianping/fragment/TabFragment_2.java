@@ -4,6 +4,9 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.StrikethroughSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +29,7 @@ import com.lidroid.xutils.http.RequestParams;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest;
+import com.lidroid.xutils.http.client.multipart.content.StringBody;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.squareup.picasso.Picasso;
 
@@ -96,9 +100,12 @@ public class TabFragment_2 extends Fragment {
             Goods goods=goodsList.get(position);
             holder.short_title.setText(goods.getShort_title());
             holder.title.setText(goods.getTitle());
-            holder.price.setText(Integer.toString(goods.getPrice()));
-            holder.value.setText(Integer.toString(goods.getValue()));
-            holder.sum.setText(Integer.toString(goods.getSum()));
+            holder.price.setText("现价：￥"+Integer.toString(goods.getPrice()));
+            StringBuffer sbf=new StringBuffer("原价：￥"+goods.getValue());
+            SpannableString string=new SpannableString(sbf);
+            string.setSpan(new StrikethroughSpan(),0,sbf.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            holder.value.setText(string);
+            holder.sum.setText(Integer.toString(goods.getSum())+"份");
             Picasso.with(getContext()).load(goods.getImage_url()).into(holder.pic);
             return convertView;
         }
