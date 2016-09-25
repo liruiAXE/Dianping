@@ -6,12 +6,14 @@
 
     <!-- TODO: Update blank TabFragment_3 layout -->
 
-    <ListView
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/goods_list">
 
-    </ListView>
+    </com.handmark.pulltorefresh.library.PullToRefreshListView>
+
+
 
 
 </FrameLayout>

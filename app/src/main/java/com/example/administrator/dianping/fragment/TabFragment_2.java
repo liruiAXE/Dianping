@@ -3,6 +3,8 @@ package com.example.administrator.dianping.fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -22,6 +24,8 @@ import com.example.administrator.dianping.utils.CategoryFetch;
 import com.example.administrator.dianping.utils.CityFetch;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.exception.HttpException;
@@ -44,7 +48,7 @@ import java.util.List;
 public class TabFragment_2 extends Fragment {
     private static String TAG="tabf2";
     @ViewInject(R.id.goods_list)
-    ListView listView;
+    PullToRefreshListView listView;
     List<Goods> goodsList=new ArrayList<>();
     MyAdapter adapter=new MyAdapter();
     @Override
@@ -55,7 +59,21 @@ public class TabFragment_2 extends Fragment {
         View view=inflater.inflate(R.layout.fragment_fragment_2, container, false);
         ViewUtils.inject(this,view);
         listView.setAdapter(adapter);
-        loadDates();
+        listView.setMode(PullToRefreshBase.Mode.BOTH);
+        listView.setScrollingWhileRefreshingEnabled(true);
+        listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+            @Override
+            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                loadDates(listView.getScaleY()<0);
+            }
+        });
+        new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                listView.setRefreshing();
+                return true;
+            }
+        }).sendEmptyMessageDelayed(0,300);
         return view;
 
     }
@@ -124,9 +142,14 @@ public class TabFragment_2 extends Fragment {
         @ViewInject(R.id.good_sum)
         TextView sum;
     }
-    private int page=1,size=7;
+    private int page,size=6;
     private String url= CityFetch.BASE_URL+"goods";
-    private void loadDates(){
+    private void loadDates(boolean refresh){
+        if (refresh){
+            page=1;
+        } else {
+            page++;
+        }
         Log.i(TAG,"onLoadDates");
         RequestParams params=new RequestParams();
         params.addQueryStringParameter("page",page+"");
@@ -134,11 +157,13 @@ public class TabFragment_2 extends Fragment {
         new HttpUtils().send(HttpRequest.HttpMethod.GET, url, params, new RequestCallBack<String>() {
             @Override
             public void onSuccess(ResponseInfo<String> responseInfo) {
+                listView.onRefreshComplete();
                 String jsonStr=responseInfo.result;
                 Log.i(TAG,"onSuccesss");
                 Log.i(TAG,"jsonStr : "+jsonStr);
                 try {
                     JSONObject object=new JSONObject(jsonStr);
+                    int count=object.getInt("count");
                     Log.i(TAG,"where1");
                     JSONArray dates=object.getJSONArray("dates");
                     Log.i(TAG,"where2");
@@ -146,9 +171,16 @@ public class TabFragment_2 extends Fragment {
                     Log.i(TAG,"where3");
                     List<Goods> li=(new Gson()).fromJson(dates.toString(),type);
                     Log.i(TAG,"where4");
+                    if (count==page){
+                        listView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+                    } else {
+                        listView.setMode(PullToRefreshBase.Mode.BOTH);
+                    }
+                    if (page==1)
                     goodsList.clear();
                     goodsList.addAll(li);
                     adapter.notifyDataSetChanged();
+
                 } catch(JSONException e){
                     Log.i(TAG,"JSONException e");
                 }
@@ -157,6 +189,7 @@ public class TabFragment_2 extends Fragment {
 
             @Override
             public void onFailure(HttpException e, String s) {
+                listView.onRefreshComplete();
                 Log.i(TAG,"onFailure!!!");
             }
         });
